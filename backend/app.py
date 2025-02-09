@@ -9,6 +9,8 @@ from dotenv import load_dotenv
 import bcrypt
 from functools import wraps
 from bson import ObjectId
+from gevent.pywsgi import WSGIServer
+from geventwebsocket.handler import WebSocketHandler
 
 # Load environment variables
 load_dotenv()
@@ -16,7 +18,7 @@ load_dotenv()
 # Initialize Flask app
 app = Flask(__name__)
 CORS(app)
-socketio = SocketIO(app, cors_allowed_origins="*")
+socketio = SocketIO(app, cors_allowed_origins="*", async_mode="gevent")
 
 # Configure MongoDB
 client = MongoClient(os.getenv("MONGO_URI"))
@@ -38,6 +40,7 @@ def hash_password(password):
 # Check password during login
 def check_password(password, hashed):
     return bcrypt.checkpw(password.encode('utf-8'), hashed.encode('utf-8'))
+
 
 # ============== Authentication Middleware ============== #
 def verify_token(token):
@@ -174,4 +177,6 @@ def handle_disconnect():
     print("Client disconnected")
 
 if __name__ == '__main__':
-    socketio.run(app, debug=True, port=5000)
+    print("Starting server with Gevent...")
+    http_server = WSGIServer(("0.0.0.0", 5000), app, handler_class=WebSocketHandler)
+    socketio.run(app, host="0.0.0.0", port=5000)
