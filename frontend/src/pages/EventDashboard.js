@@ -3,7 +3,7 @@ import API from "../api/axios";  // Using Axios for API calls
 import io from "socket.io-client";
 import { useNavigate } from "react-router-dom";
 
-const socket = io("http://localhost:5000");
+const socket = io("https://event-platform-fullstack.onrender.com");
 
 const EventDashboard = () => {
     const [events, setEvents] = useState([]);

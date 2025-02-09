@@ -10,7 +10,7 @@ const RegisterPage = () => {
     const handleRegister = async (e) => {
         e.preventDefault();
         try {
-            await axios.post("http://localhost:5000/register", { email, password });
+            await axios.post("https://event-platform-fullstack.onrender.com/register", { email, password });
             alert("Registration successful! Please login.");
             navigate("/login");
         } catch (error) {

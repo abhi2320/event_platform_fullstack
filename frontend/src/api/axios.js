@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-    baseURL: "http://localhost:5000",  // Change to your backend URL in production
+    baseURL: "https://event-platform-fullstack.onrender.com",  // Change to your backend URL in production
 });
 
 // Attach JWT token to every request
