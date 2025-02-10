@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 // Connect WebSocket to the deployed backend
 const socket = io("https://event-platform-fullstack.onrender.com", {
-    transports: ["websocket"], // Ensures WebSocket connection
+    transports: ["websocket"], 
 });
 
 const EventDashboard = () => {

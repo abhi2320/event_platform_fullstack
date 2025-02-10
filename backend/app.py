@@ -15,14 +15,14 @@ from geventwebsocket.handler import WebSocketHandler
 # Load environment variables
 load_dotenv()
 
-# Initialize Flask app
+# Initialize
 app = Flask(__name__)
 CORS(app)
 socketio = SocketIO(app, cors_allowed_origins="*", async_mode="gevent")
 
 # Configure MongoDB
 client = MongoClient(os.getenv("MONGO_URI"))
-db = client.cluster0  # Use "cluster0" database
+db = client.cluster0  
 
 # JWT Configuration
 JWT_ALGORITHM = "HS256"
@@ -46,7 +46,7 @@ def check_password(password, hashed):
 def verify_token(token):
     try:
         payload = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
-        return payload["sub"]  # Returns user ID
+        return payload["sub"]  
     except Exception as e:
         return None
 
@@ -58,7 +58,7 @@ def token_required(f):
             return jsonify({"error": "Missing token"}), 401
         
         try:
-            token = token.split(" ")[1]  # Remove "Bearer" prefix
+            token = token.split(" ")[1]  
             user_id = verify_token(token)
             if not user_id:
                 return jsonify({"error": "Invalid token"}), 401
@@ -82,7 +82,7 @@ def register():
     
     user_data = {
         "email": data['email'],
-        "password": hash_password(data['password']),  # Secure password
+        "password": hash_password(data['password']),  
         "created_at": datetime.utcnow()
     }
     db.users.insert_one(user_data)
@@ -113,7 +113,7 @@ def create_event(user_id):
         "title": data['title'],
         "description": data['description'],
         "date": data['date'],
-        "organizer": user_id,  # From JWT token
+        "organizer": user_id,  
         "attendees": []
     }
     result = db.events.insert_one(event)
